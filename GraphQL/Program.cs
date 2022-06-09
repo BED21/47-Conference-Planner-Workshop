@@ -1,3 +1,4 @@
+using GraphQL;
 using GraphQL.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,11 +14,19 @@ builder.Services.AddDbContext<ApplicationDbContext>(
                 DbLoggerCategory.Database.Command.Name
             }));
 
+// Add GraphQL related services
+builder.Services
+    .AddGraphQLServer()
+    .AddQueryType<Query>()
+    .AddMutationType<Mutation>();
+
 
 
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+//app.UseRouting();
+
+app.MapGraphQL("/");
 
 app.Run();
